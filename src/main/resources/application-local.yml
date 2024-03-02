@@ -1,0 +1,14 @@
+spring:
+  h2.console:
+    enabled: true
+    path: '/console'
+  datasource:
+    url: 'jdbc:h2:file:C:/demo/todo-db'
+  jpa:
+    hibernate:
+      ddl-auto: update
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
