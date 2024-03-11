@@ -43,9 +43,9 @@ projects.html: View for managing projects, allows adding projects and defining p
 
 **Technologies:**
 
--Java 11
--Spring Boot
--Spring Data JPA
--H2 Database
--Thymeleaf (for view rendering)
+* Java 11
+* Spring Boot
+* Spring Data JPA
+* H2 Database
+* Thymeleaf (for view rendering)
 -Maven (dependency and build management)
