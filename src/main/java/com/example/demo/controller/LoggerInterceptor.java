@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-public class LoggerInterceptor implements HandlerInterceptor {
+class LoggerInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(LoggerInterceptor.class);
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) {
         logger.info("[preHandle] " + request.getMethod() + " " + request.getRequestURI());
         return true;
     }

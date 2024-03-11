@@ -1,5 +1,6 @@
 package com.example.demo.logic;
 
+import com.example.demo.model.Project;
 import com.example.demo.model.TaskGroup;
 import com.example.demo.model.TaskGroupRepository;
 import com.example.demo.model.TaskRepository;
@@ -10,22 +11,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TaskGroupService {
-    private final TaskGroupRepository repository;
-    private final TaskRepository taskRepository;
+    private TaskGroupRepository repository;
+    private TaskRepository taskRepository;
 
-    public TaskGroupService(TaskGroupRepository repository, TaskRepository taskRepository) {
+    TaskGroupService(final TaskGroupRepository repository, final TaskRepository taskRepository) {
         this.repository = repository;
         this.taskRepository = taskRepository;
     }
 
-    public GroupReadModel createGroup(GroupWriteModel source) {
-        TaskGroup result = repository.save(source.toGroup());
+    public GroupReadModel createGroup(final GroupWriteModel source) {
+        return createGroup(source, null);
+    }
+
+    GroupReadModel createGroup(final GroupWriteModel source, final Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 
     public List<GroupReadModel> readAll() {
-        return repository.findAll()
-                .stream()
+        return repository.findAll().stream()
                 .map(GroupReadModel::new)
                 .collect(Collectors.toList());
     }

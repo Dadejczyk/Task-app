@@ -10,15 +10,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TaskRepository {
-    List<Task> findAll(); //pobiera wszystkie Taski
+    List<Task> findAll();
+
     Page<Task> findAll(Pageable page);
-    Optional<Task> findById(Integer id);// pobiera tylko konkretny Task
+
+    Optional<Task> findById(Integer id);
 
     boolean existsById(Integer id);
 
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
 
+    List<Task> findByDone(boolean done);
 
-    Task save(Task entity); //Task do zapisania/stworzenia
-    List<Task> findByDone(boolean done); // to szuka po liscie tasków które są zrobione na true można zrobić tez false.czyli było by same findByDoneIsTrue/False
+    Task save(Task entity);
+
+    List<Task> findAllByGroup_Id(Integer groupId);
 }

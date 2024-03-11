@@ -2,12 +2,12 @@ package com.example.demo.controller;
 
 
 
-import com.example.demo.logic.TaskService;
 import com.example.demo.model.Task;
 import com.example.demo.model.TaskRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +17,17 @@ import org.springframework.data.domain.Pageable;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/tasks")
-public class TaskController {
+class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    private final ApplicationEventPublisher eventPublisher;
     private final TaskRepository repository;
-    private final TaskService service;
 
-    TaskController(TaskRepository repository, TaskService service) {
+    TaskController(ApplicationEventPublisher eventPublisher, final TaskRepository repository) {
+        this.eventPublisher = eventPublisher;
         this.repository = repository;
-        this.service = service;
     }
 
     @PostMapping
@@ -38,58 +37,53 @@ public class TaskController {
     }
 
     @GetMapping(params = {"!sort", "!page", "!size"})
-    CompletableFuture<ResponseEntity<List<Task>>> readAllTasks() {
-        logger.warn("Exposing all The Tasks");
-        return service.findAllAsync().thenApply(ResponseEntity::ok);
+    ResponseEntity<List<Task>> readAllTasks() {
+        logger.warn("Exposing all the tasks!");
+        return ResponseEntity.ok(repository.findAll());
     }
 
     @GetMapping
-    ResponseEntity<List<Task>> readAllTask(Pageable page) {
+    ResponseEntity<List<Task>> readAllTasks(Pageable page) {
         logger.info("Custom pageable");
         return ResponseEntity.ok(repository.findAll(page).getContent());
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Task> readTasks(@PathVariable int id) {
+    ResponseEntity<Task> readTask(@PathVariable int id) {
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    //szuka to domyślne zrobionych tasków jeżeli ktoś poda inną wartośc to zostanie ona zmapowana i będzie szukać innej wartości od true czyli wyłącznie false
+
     @GetMapping("/search/done")
-    ResponseEntity<List<Task>> readDoneTask(@RequestParam(defaultValue = "true") boolean state) { //@RequestParam czyli parametr żądania
+    ResponseEntity<List<Task>> readDoneTasks(@RequestParam(defaultValue = "true") boolean state) {
         return ResponseEntity.ok(
                 repository.findByDone(state)
         );
     }
 
-
     @PutMapping("/{id}")
-    ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate ){
-        if (!repository.existsById(id)){
-            return ResponseEntity.notFound().build();
-        }
-
-        Task updatedTask = repository.findById(id)
-                .map(task -> {
-                    task.updateFrom(toUpdate);
-                    return repository.save(task);
-                })
-                .orElse(null);
-
-        return ResponseEntity.ok(updatedTask);
-    }
-
-    @Transactional
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> toggleTask(@PathVariable int id) {
+    ResponseEntity<?> updateTask(@PathVariable int id, @RequestBody @Valid Task toUpdate) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-
         repository.findById(id)
-                .ifPresent(task -> task.setDone(!task.isDone()));
+                .ifPresent(task -> {
+                    task.updateFrom(toUpdate);
+                    repository.save(task);
+                });
+        return ResponseEntity.noContent().build();
+    }
 
+    @Transactional //to element programowania aspektowego, to jest coś oznaczającego naszą metodę przed którą rozpoczyna się transakcja bazodanowa i po której na sam koniec ta transakcja jest zatwierdzana na bazie.
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> toggleTask(@PathVariable int id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.findById(id)
+                .map(Task::toogle)
+                .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
 }

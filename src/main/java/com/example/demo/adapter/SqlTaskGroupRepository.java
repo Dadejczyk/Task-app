@@ -10,13 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SqlTaskGroupRepository extends TaskGroupRepository,JpaRepository<TaskGroup, Integer> {
-
+interface SqlTaskGroupRepository extends TaskGroupRepository, JpaRepository<TaskGroup, Integer> {
     @Override
     @Query("select distinct g from TaskGroup g join fetch g.tasks")
     List<TaskGroup> findAll();
 
     @Override
     boolean existsByDoneIsFalseAndProject_Id(Integer projectId);
-
 }

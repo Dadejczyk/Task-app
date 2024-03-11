@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/info")
-public class InfoController {
-    private final DataSourceProperties dataSource;
-    private final TaskConfigurationProperties myProp;
+class InfoController {
+    private DataSourceProperties dataSource;
+    private TaskConfigurationProperties myProp;
 
-    InfoController(DataSourceProperties dataSource, TaskConfigurationProperties myProp) {
+    InfoController(final DataSourceProperties dataSource, final TaskConfigurationProperties myProp) {
         this.dataSource = dataSource;
         this.myProp = myProp;
     }

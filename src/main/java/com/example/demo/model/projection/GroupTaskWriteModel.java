@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 public class GroupTaskWriteModel {
     @NotBlank(message = "Task's description must not be empty")
     private String description;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime deadline;
 
