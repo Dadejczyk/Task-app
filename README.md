@@ -2,7 +2,7 @@
 
 ### This application is a task management system that allows users to create and view tasks in different project groups. It is implemented in Java technology using Spring Boot.
 
-** Features:**.
+**Features:**.
 
 * Allows you to create, view, edit tasks that can be assigned to specific projects.
 * Provides the ability to mark tasks as completed or uncompleted.
