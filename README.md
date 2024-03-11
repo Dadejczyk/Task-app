@@ -1,38 +1,39 @@
-# Task Manager Application
+# Task Manager application
 
-### **This application is a task management system that allows users to create, view, edit and delete tasks in different project groups. It is implemented in Java technology using Spring Boot.**
+### This application is a task management system that allows users to create and view tasks in different project groups. It is implemented in Java technology using Spring Boot.
 
-**Features:**
+** Features:**.
 
-* Allows the creation, viewing, editing and deletion of tasks and groups of tasks that can be assigned to specific projects.
-* Provides the ability to mark tasks as completed or not completed.
+* Allows you to create, view, edit tasks that can be assigned to specific projects.
+* Provides the ability to mark tasks as completed or uncompleted.
 * Provides a REST API to communicate with the application.
 * Provides a user interface in HTML/Thymeleaf form.
 * Key files and components:
 
-***Key Components***
+***Key components***
 
 Controllers:
 
 * **TaskController:** Manages task requests, handles CRUD operations on tasks.
-* **ReportController:** Generates reports based on tasks and related events.
+**ReportController:** Generates reports based on tasks and related events.
 
 Services:
 
-* **ProjectService:** Business logic for managing projects and task groups.
-* **TaskGroupService:** Service for manipulating task groups.
+**ProjectService:** Business logic for managing projects and task groups.
+* TaskGroupService:** Service for manipulating groups of tasks.
 
-Models and Repositories:
+Models and repositories:
 
-* **Task, TaskGroup, Project:** Models representing tasks, task groups and projects.
-* **TaskRepository, TaskGroupRepository, ProjectRepository:** Repositories for interacting with the database.
+**Task, TaskGroup, Project:** Models representing tasks, task groups and projects.
+**TaskRepository, TaskGroupRepository, ProjectRepository:** Repositories for interacting with the database.
 
 Tests:
 
-* **TaskControllerE2ETest:** End-to-end tests to check the performance of the API.
-* **TaskControllerIntegrationTest:** Integration tests for the task controller.
-* **TaskControllerLightIntegrationTest:** Lightweight integration tests for the task controller.
-* **ProjectServiceTest**, TaskGroupServiceTest: Unit tests for business logic.
+* **TaskControllerE2ETest:** End-to-end tests to check API performance.
+**TaskControllerIntegrationTest:** Integration tests for the task controller.
+**TaskControllerLightIntegrationTest:** Lightweight integration tests for the task controller.
+**ProjectServiceTest**, TaskGroupServiceTest: Unit tests for business logic.
+
 
 Configuration:
 
