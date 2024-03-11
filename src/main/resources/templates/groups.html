@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App: groups</title>
+    <title>Task App: groups</title>
     <link rel="stylesheet" href="https://igoradamenko.github.io/awsm.css/css/awsm.min.css">
     <style>
         .Bd {
@@ -57,16 +57,16 @@
         </dd>
     </dl>
     <fieldset>
-        <legend>Nowa grupa</legend>
+        <legend>New Group</legend>
         <!--/*@thymesVar id="group" type="com.example.demo.model.projection.GroupWriteModel"*/-->
         <form action="#" method="post" th:action="@{/groups}" th:object="${group}">
             <p class="C(red)" th:if="${#fields.hasAnyErrors()}" th:errors="*{all}"></p>
-            <label>Opis
+            <label>Description
                 <input type="text" th:field="*{description}" th:errorclass="'Bdc(red)'" />
             </label>
             <fieldset th:each="task,taskStat : *{tasks}">
-                <legend th:text="|Zadanie ${taskStat.index + 1}|"></legend>
-                <label>Opis
+                <legend th:text="|Task ${taskStat.index + 1}|"></legend>
+                <label>Description
                     <input type="text" th:field="*{tasks[__${taskStat.index}__].description}"
                            th:errorclass="'Bdc(red)'" />
                 </label>
@@ -79,8 +79,8 @@
                 <button type="submit" name="addTask">+</button>
             </div>
             <p>
-                <button type="submit">Dodaj</button>
-                <button type="reset">Wyczyść</button>
+                <button type="submit">Add</button>
+                <button type="reset">Clean</button>
             </p>
         </form>
     </fieldset>

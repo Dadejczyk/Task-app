@@ -42,7 +42,7 @@ class ProjectController {
         service.save(current);
         model.addAttribute("project", new ProjectWriteModel());
         model.addAttribute("projects", getProjects());
-        model.addAttribute("message", "Dodano projekt!");
+        model.addAttribute("message", "Added project!");
         return "projects";
     }
 
@@ -72,9 +72,9 @@ class ProjectController {
     ) {
         try {
             service.createGroup(deadline, id);
-            model.addAttribute("message", "Dodano grupę!");
+            model.addAttribute("message", "Added Group!");
         } catch (IllegalStateException | IllegalArgumentException e) {
-            model.addAttribute("message", "Błąd podczas tworzenia grupy!");
+            model.addAttribute("message", "Error while creating a group!");
         }
         return "projects";
     }

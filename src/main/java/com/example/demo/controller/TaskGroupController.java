@@ -52,7 +52,7 @@ class TaskGroupController {
         service.createGroup(current);
         model.addAttribute("group", new GroupWriteModel());
         model.addAttribute("groups", getGroups());
-        model.addAttribute("message", "Dodano grupę!");
+        model.addAttribute("message", "Added Group!");
         return "groups";
     }
 
