@@ -1,5 +1,5 @@
-                                                        ***Task Manager Application***
-******This application is a task management system that allows users to create, view, edit and delete tasks in different project groups. It is implemented in Java technology using Spring Boot.******
+### Task Manager Application
+**This application is a task management system that allows users to create, view, edit and delete tasks in different project groups. It is implemented in Java technology using Spring Boot.**
 
 **Features:**
 
