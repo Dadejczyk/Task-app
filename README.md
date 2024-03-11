@@ -1,5 +1,4 @@
-######This application is a task management system that allows users to create, view, edit and delete tasks in different project groups. It is implemented in Java technology using Spring Boot.######
-
+######This application is a task management system that allows users to create, view, edit and delete tasks in different project groups. It is implemented in Java technology using Spring Boot.
 **Features:
 
 Allows the creation, viewing, editing and deletion of tasks and groups of tasks that can be assigned to specific projects.
@@ -8,7 +7,7 @@ Provides a REST API to communicate with the application.
 Provides a user interface in HTML/Thymeleaf form.
 Key files and components:
 
-**Controllers:
+*Controllers:
 
 TaskController: Manages task requests, handles CRUD operations on tasks.
 ReportController: Generates reports based on tasks and related events.
