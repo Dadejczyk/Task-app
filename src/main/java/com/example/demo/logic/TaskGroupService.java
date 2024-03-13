@@ -19,6 +19,8 @@ public class TaskGroupService {
         this.taskRepository = taskRepository;
     }
 
+    // Metody serwisu
+
     public GroupReadModel createGroup(final GroupWriteModel source) {
         return createGroup(source, null);
     }

@@ -19,23 +19,59 @@
             <button type="submit">Add!</button>
         </form>
     </fieldset>
+    <ul id="taskList">
+        <!-- Lista zadań zostanie wypełniona dynamicznie -->
+    </ul>
 </main>
 <script>
     (async function() {
         const main = document.querySelector('main');
+        const taskList = document.getElementById('taskList');
         const params = new URLSearchParams(location.search);
-        const response = params.has('group') ? await fetch(`/groups/${params.get('group')}`) : await fetch('/tasks');
-        if (response.ok) {
-            const tasks = await response.json();
-            const list = document.createElement('ul');
-            tasks.forEach(task => list.appendChild(createTask(task)));
-            main.prepend(list);
+        const groupId = params.get('group'); // Pobierz ID grupy z parametrów URL
+
+        // Funkcja tworząca pojedynczy element zadania na liście
+        function createTask({ id, description, deadline, done }) {
+            const result = document.createElement('li');
+            result.innerHTML = `
+                <label>
+                    <input type="checkbox" ${done ? ' checked' : ''}/>
+                    ${description}
+                    <small>${deadline && deadline.replace('T', ' ')}</small>
+                    <button class="delete-btn">Delete</button>
+                </label>
+            `;
+
+            // Obsługa kliknięcia na przycisku "Delete" - wysyłanie żądania DELETE
+            const deleteButton = result.querySelector('.delete-btn');
+            deleteButton.addEventListener('click', async () => {
+                const deleteResponse = await fetch(`/tasks/${id}`, { method: 'DELETE' });
+                if (deleteResponse.ok) {
+                    result.remove(); // Usunięcie zadania z listy po udanym usunięciu na serwerze
+                } else {
+                    console.error('Failed to delete task');
+                }
+            });
+
+            return result;
         }
+
+        // Obsługa pobierania i renderowania zadań
+        async function fetchAndRenderTasks() {
+            const response = groupId ? await fetch(`/groups/${groupId}/tasks`) : await fetch('/tasks');
+            if (response.ok) {
+                const tasks = await response.json();
+                taskList.innerHTML = ''; // Wyczyść listę przed dodaniem nowych zadań
+                tasks.forEach(task => taskList.appendChild(createTask(task)));
+            }
+        }
+
+        // Obsługa dodawania nowego zadania
         const form = document.querySelector('form');
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
             const resp = await fetch('/tasks', {
-                method: 'post',
+                method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -47,28 +83,13 @@
             });
             if (resp.ok) {
                 const taskFromServer = await resp.json();
-                document.querySelector('ul').appendChild(createTask(taskFromServer));
+                taskList.appendChild(createTask(taskFromServer));
                 form.reset();
             }
         });
 
-        function createTask({ id, description, deadline, done }) {
-            const result = document.createElement('li');
-            result.innerHTML = `
-                <label>
-                    <input type="checkbox" ${done ? ' checked' : ''}/>
-                    ${description}
-                    <small>${deadline && deadline.replace('T', ' ')}</small>
-                </label>
-            `;
-            result.querySelector('input').addEventListener('click', async (e) => {
-                const response = await fetch(`/tasks/${id}`, { method: 'PATCH' });
-                if (!response.ok) {
-                    e.target.checked = !e.target.checked;
-                }
-            });
-            return result;
-        }
+        // Pobierz i wyrenderuj zadania przy ładowaniu strony
+        await fetchAndRenderTasks();
     })();
 </script>
 </body>

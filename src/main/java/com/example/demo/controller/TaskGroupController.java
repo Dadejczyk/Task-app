@@ -20,7 +20,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-
 @Controller
 @IllegalExceptionProcessing
 @RequestMapping("/groups")
@@ -89,8 +88,11 @@ class TaskGroupController {
         return ResponseEntity.noContent().build();
     }
 
+
+
     @ModelAttribute("groups")
     List<GroupReadModel> getGroups() {
         return service.readAll();
     }
+
 }

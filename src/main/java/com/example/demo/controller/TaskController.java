@@ -86,4 +86,12 @@ class TaskController {
                 .ifPresent(eventPublisher::publishEvent);
         return ResponseEntity.noContent().build();
     }
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> deleteTask(@PathVariable int id) {
+        if (!repository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -2,10 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.logic.ProjectService;
 import com.example.demo.model.Project;
+import com.example.demo.model.ProjectRepository;
 import com.example.demo.model.ProjectStep;
+import com.example.demo.model.TaskRepository;
 import com.example.demo.model.projection.ProjectWriteModel;
 import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,8 +23,10 @@ import java.util.List;
 class ProjectController {
     private final ProjectService service;
 
-    ProjectController(final ProjectService service) {
+    private final ProjectRepository repository;
+    ProjectController(final ProjectService service, ProjectRepository repository) {
         this.service = service;
+        this.repository = repository;
     }
 
     @GetMapping
@@ -83,4 +88,5 @@ class ProjectController {
     List<Project> getProjects() {
         return service.readAll();
     }
+
 }
